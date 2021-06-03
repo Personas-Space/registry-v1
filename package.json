@@ -56,8 +56,8 @@
     "lint:scripts": "eslint ./scripts/**/*.js --fix",
     "lint:config": "eslint ./index.js ./hardhat.config.js --no-ignore .solcover.js .eslintrc.js --fix",
     "prettier": "prettier --write \"contracts/**/*.sol\"",
-    "prepare": "npm run prettier && npm run lint:contract",
-    "lint": "npm run prepare && npm run lint:test && npm run lint:config && npm run lint:scripts",
+    "pre": "npm run prettier && npm run lint:contract",
+    "lint": "npm run pre && npm run lint:test && npm run lint:config && npm run lint:scripts",
     "confirm": "npm run lint && npm run test",
     "localhost": "npx hardhat node",
     "deploy": "concurrently \"npm:localhost\" \"wait-on http://127.0.0.1:8545 && npm run deploy:localhost\"",
@@ -77,7 +77,7 @@
       "eslint --fix"
     ],
     "*.sol": [
-      "npm run prepare"
+      "npm run pre"
     ]
   },
   "author": "",
