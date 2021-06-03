@@ -1,0 +1,15 @@
+node_modules/
+test
+
+artifacts/
+cache/
+local/
+
+/coverage
+coverage.json
+
+*env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
