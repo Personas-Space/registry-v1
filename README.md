@@ -35,7 +35,7 @@ To compile or deploy locally, do:
 
 ## Token Contract
 
-View the deployed **Personas Registry V1** contract on [BSC Scan](https://bscscan.com/address/#code).
+View the deployed **Personas Registry V1** contract on [BSC Scan](https://bscscan.com/address/0x38825D6303732b95AFa0F16647b60860Cf0DD941#code).
 
 ## Documentation
 Find further documentation and guides on [docs.personas.space](http://docs.personas.space/).
