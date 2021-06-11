@@ -38,4 +38,4 @@ To compile or deploy locally, do:
 View the deployed **Personas Registry V1** contract on [BSC Scan](https://bscscan.com/address/#code).
 
 ## Documentation
-Find further documentation and guides on [docs.personas.space](http://docs/personas.space/).
+Find further documentation and guides on [docs.personas.space](http://docs.personas.space/).

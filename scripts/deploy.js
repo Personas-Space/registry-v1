@@ -9,7 +9,7 @@ async function main () {
   console.log('Deployment network chain id:', chainId)
 
   const BASE_NETWORK = chainId
-  const BASE_URI = 'https://api.personas.space'
+  const BASE_URI = 'https://personas.space'
   const FEE = 0
 
   const Registry = await ethers.getContractFactory('RegistryV1')

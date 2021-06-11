@@ -4,7 +4,7 @@ const { expect } = require('chai')
 const provider = waffle.provider
 
 const BASE_NETWORK = 56
-const BASE_URI = 'http://psn.onl'
+const BASE_URI = 'http://prs.onl'
 const FEE = 2
 
 describe('Personas contract management', function () {
@@ -49,7 +49,7 @@ describe('Personas contract management', function () {
       await expect(await registry.count()).to.equal(0)
     })
 
-    it('admin and registrar count are 1 and 1 respectively', async () => {
+    it('admin count is 1', async () => {
       await expect(await registry.adminCount()).to.equal(1)
     })
   })
