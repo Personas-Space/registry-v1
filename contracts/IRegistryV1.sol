@@ -15,8 +15,6 @@ interface IRegistryV1 {
   event FeeUpdated(uint256 _fee);
   event UriUpdated(string _uri);
   event NetworkUpdated(uint256 _network);
-  event Paused();
-  event Unpaused();
   event FeesWithdrawn(address _by, address _to, uint256 _balance);
   event NameRegistered(string _name, address _user, uint256 _count);
 

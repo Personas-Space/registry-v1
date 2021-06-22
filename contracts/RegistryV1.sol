@@ -4,12 +4,14 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
 
 import "./IRegistryV1.sol";
 
 /// @title Personas Registry V1 Contract
 
-contract RegistryV1 is IRegistryV1 {
+contract RegistryV1 is IRegistryV1, Context, Pausable {
   ////////////
   // libraries
   ////////////
@@ -40,7 +42,6 @@ contract RegistryV1 is IRegistryV1 {
   uint256 public version = 1;
 
   uint256 public fee;
-  bool public paused;
   address public registrar;
 
   //////////////
@@ -52,9 +53,9 @@ contract RegistryV1 is IRegistryV1 {
     string memory _uri,
     uint256 _fee // solhint-disable-next-line func-visibility
   ) {
-    admins.add(msg.sender);
+    admins.add(_msgSender());
 
-    registrar = msg.sender;
+    registrar = _msgSender();
 
     fee = _fee;
     network = _network;
@@ -70,17 +71,7 @@ contract RegistryV1 is IRegistryV1 {
   ////////////
 
   modifier onlyAdmin() {
-    require(isAdmin(msg.sender), "Only admin");
-    _;
-  }
-
-  modifier whenPaused() {
-    require(paused, "Paused");
-    _;
-  }
-
-  modifier whenNotPaused() {
-    require(!paused, "Not paused");
+    require(isAdmin(_msgSender()), "Only admin");
     _;
   }
 
@@ -121,19 +112,17 @@ contract RegistryV1 is IRegistryV1 {
   }
 
   function pause() public override whenNotPaused onlyAdmin {
-    paused = true;
-    emit Paused();
+    _pause();
   }
 
   function unpause() public override whenPaused onlyAdmin {
-    paused = false;
-    emit Unpaused();
+    _unpause();
   }
 
   function withdrawFees(address _to) public override onlyAdmin {
     uint256 _balance = address(this).balance;
     payable(_to).transfer(_balance);
-    emit FeesWithdrawn(msg.sender, _to, _balance);
+    emit FeesWithdrawn(_msgSender(), _to, _balance);
   }
 
   ////////////////////
@@ -149,7 +138,7 @@ contract RegistryV1 is IRegistryV1 {
     require(persona[_name].created == 0, "Name already claimed");
     require(bytes(name[_user]).length == 0, "Claimant already registered");
 
-    if (msg.sender != registrar) {
+    if (_msgSender() != registrar) {
       bytes32 hash = keccak256(abi.encodePacked(_name, _user));
       bytes32 prefixedHash = ECDSA.toEthSignedMessageHash(hash);
       require(

@@ -203,6 +203,27 @@ describe('Registry contract actions', function () {
             )
         ).to.be.revertedWith('Claimant already registered')
       })
+
+      it('cannot register names when paused', async () => {
+        const name = 'coke2'
+        const fee = await registry.fee()
+
+        await expect(registry.connect(contractAdmin).pause()).to.emit(registry, 'Paused')
+        await expect(await registry.paused()).to.equal(true)
+
+        await expect((await registry.persona(name)).user).to.equal(EMPTY_ADDRESS)
+        await expect(await registry.name(user2.address)).to.not.equal('')
+
+        await expect(
+          registry.connect(registrar1)
+            .registerName(
+              name, user2.address, '0x', { value: fee }
+            )
+        ).to.be.revertedWith('Pausable: paused')
+
+        await expect(registry.connect(contractAdmin).unpause()).to.emit(registry, 'Unpaused')
+        await expect(await registry.paused()).to.equal(false)
+      })
     })
 
     describe('revenues', function () {
